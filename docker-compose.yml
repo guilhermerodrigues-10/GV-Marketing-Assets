@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: gv-marketing-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Args are ONLY passed during 'docker-compose build'
+      # They are NOT stored in the final container metadata as ENV vars
+      args:
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+    ports:
+      - "8080:80"
+    restart: always
+    # Removed 'environment' section to prevent keys appearing in 'docker inspect'
+    
+    # Security: Read-only filesystem (optional, but good practice for static sites)
+    # read_only: true
+    # tmpfs:
+    #   - /var/cache/nginx
+    #   - /var/run
